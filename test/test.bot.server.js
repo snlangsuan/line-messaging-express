@@ -7,6 +7,7 @@ const Line = require('line-messaging');
 const LineExpress = require('../');
 
 let app = require('express')();
+let server = null;
 
 describe('LINE Server Request Webhook', function () {
   var options = {
@@ -33,7 +34,7 @@ describe('LINE Server Request Webhook', function () {
   });
 
   before(function () {
-    app.listen(8000);
+    server = app.listen(8000);
   });
 
   it('should return 200', function (done) {
@@ -74,6 +75,7 @@ describe('LINE Server Request Webhook', function () {
       body: JSON.stringify(requestJsonData)
     }, function (error, response, body) {
       response.statusCode.should.equal(200);
+      server && server.close();
       done();
     });
   });
